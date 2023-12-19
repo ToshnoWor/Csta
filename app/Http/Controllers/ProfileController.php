@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\User;
+use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -56,5 +58,19 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+    /**
+     * Show the application dashboard.
+     *
+     * @return Renderable
+     */
+    public function index($user): Renderable
+    {
+        $user = User::findOrFail($user);
+
+        return view('dashboard', [
+            'user' => $user
+        ]);
     }
 }
